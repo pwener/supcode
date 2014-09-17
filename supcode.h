@@ -15,6 +15,7 @@ char * readstr(char *message){
 	char *text;
 	text = (char * ) malloc(sizeof(STRLENGTH));
 	scanf("%s", text);
+	__fpurge(stdin);
 	return text;
 }
 
@@ -28,7 +29,8 @@ char * readstr(char *message){
 int readint(char *message){
   	int integer;
   	printf("\n%s", message);
-  	scanf ("%d", &integer);  
+  	scanf ("%d", &integer);
+	__fpurge(stdin); 
  	return integer;
 }
 
@@ -43,8 +45,10 @@ float readfloat(char *message){
 	float decimal;
  	printf("\n%s", message);
 	scanf("%f", &decimal);
+	__fpurge(stdin);
 	return decimal;
 }
+
 /**
 * createintvector will allocate an vector of integers and then returns it.
 * Receives an Integer named 'size', for specify size of the structure.
@@ -52,6 +56,7 @@ float readfloat(char *message){
 int * createintvector(int size){
 	return (int*) malloc(size*sizeof(int));
 }
+
 /**
 * createfloatvector will allocate an vector of float and then returns it.
 * Receives an Integer named 'size', for specify size of the structure.
@@ -59,6 +64,30 @@ int * createintvector(int size){
 float * createfloatvector(int size){
 	return (float*) malloc(size*sizeof(float));
 }
+/**
+* findfirststr return the index of the first occurrence of the last parameter str.
+* If an valid value is find will be returned the index, else a value -1.
+*/
+int findfirststr(const char *list[], char *str){
+	int i;
+	for(i = 0; i < sizeof(list); i++)
+		if(list[i] == str)
+			return i;
+	return -1;
+}
 
+/**
+* Returns the number of lines in an file, the URL parameter passed as a string.
+*/
+int numberoflines(char *file){
+	FILE *target = fopen(file, "r");
+	char s;
+	int n = 0;
+	while((s = fgetc(target)) != EOF){
+		if(s == '\n')
+			n++;
+	}
+	return n;
+}
 
 
