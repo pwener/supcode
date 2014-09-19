@@ -87,6 +87,7 @@ int numberoflines(char *file){
 		if(s == '\n')
 			n++;
 	}
+	fclose(file);
 	return n;
 }
 
