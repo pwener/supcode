@@ -3,6 +3,9 @@
 
 #define STRLENGTH 255
 
+/* Core of lib SUPCOD by Phelipe Wener*/
+
+
 /**
 * readstr should be used for read an String of keyboard and return in the context of called.
 * Receives a char pointer named 'message', used to print a message on the terminal,
