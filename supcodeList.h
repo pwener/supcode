@@ -84,8 +84,8 @@ blockInt *addaftervalue(blockInt *list, int key, int value){
 				aux = aux -> next;
 			}
 		}
-		if(aux -> next == NULL){
-			list = addtail(list, value);
+		if(aux -> value != key){
+			return list;
 		}else{
 			newblock->next = aux->next;
 			newblock->previous = aux;
@@ -101,7 +101,7 @@ blockInt *addaftervalue(blockInt *list, int key, int value){
 /**
 * Inserting an element before other that containing a same key value passed by parameter
 */
-blockInt *addbefore(blockInt *list, int key, int value){
+blockInt *addbeforevalue(blockInt *list, int key, int value){
 	if(list != NULL){
 		blockInt *newblock, *aux;
 		newblock = (blockInt*) malloc(sizeof(blockInt));
@@ -118,8 +118,12 @@ blockInt *addbefore(blockInt *list, int key, int value){
 					aux = aux->next;
 				}
 			}
-			newblock->next = aux->next;
-			aux->next = newblock;
+			if(aux->next != NULL){
+				if(aux->next->value == key){
+					newblock->next = aux->next;
+					aux->next = newblock;
+				}
+			}
 			return list;
 		}
 	}else{
@@ -136,12 +140,19 @@ blockInt* removebykey(blockInt *list, int key){
 	}
 	blockInt *aux, *rest;
 	aux = list;
+	if(aux->value == key){
+		rest = aux->next;
+		free(aux);
+		return rest;
+	}
 	while(aux->next->next != NULL  && aux->next->value != key){
 		aux = aux->next;
 	}
-	rest = aux->next->next;
-	free(aux->next);
-	aux->next = rest;
+	if(aux->next->value == key){
+		rest = aux->next->next;
+		free(aux->next);
+		aux->next = rest;
+	}
 	return list;
 }
 
