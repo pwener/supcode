@@ -3,22 +3,29 @@
 #include "supcodeList.h"
 
 int main(){
-	blockInt *listInteger;
-	listInteger = addhead(listInteger, 10);
-	listInteger = addtail(listInteger, 20);
-	printf("Head = %d\n", listInteger->value);
-	printf("Tail = %d\n", listInteger->next->value);
-	listInteger = addaftervalue(listInteger, 20, 15);
+	blockInt *listOfInteger;
+	if(isempty(&listOfInteger) == 1){
+        addhead(&listOfInteger, 10);
+	}
+	addtail(&listOfInteger, 20);
+
+	printf("Head = %d\n", listOfInteger->value);
+	printf("Tail = %d\n", listOfInteger->next->value);
+
+	addaftervalue(&listOfInteger, 10, 15);
 	printf("\n");
-	printListOfIntegers(listInteger);
+	printListOfIntegers(&listOfInteger);
+
 	printf("\n");
-	listInteger = addbefore(listInteger, 10, 25);
-	listInteger = removebykey(listInteger, 15);
-	printListOfIntegers(listInteger);	
+	addbeforevalue(&listOfInteger, 10, 5);
+	removebykey(&listOfInteger, 15);
+	printListOfIntegers(&listOfInteger);
 	printf("\n");
-	listInteger = removetail(listInteger);
-	listInteger = removehead(listInteger);
-	printListOfIntegers(listInteger);
+
+	removetail(&listOfInteger);
+	removehead(&listOfInteger);
+	printListOfIntegers(&listOfInteger);
 	printf("\n");
-	free(listInteger);
+
+	free(listOfInteger);
 }
