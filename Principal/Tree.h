@@ -3,6 +3,7 @@
 
 typedef struct Tree
 {
+    unsigned int sizeTree;
 	struct Tree *left;
 	char code;
 	struct Tree *rigth;
@@ -14,6 +15,7 @@ Tree *alloc(char data)
 	Tree *newTree = (Tree*)malloc(sizeof(Tree));
 	newTree->code = data;
 	newTree->left = NULL;
+	newTree->sizeTree = 0;
 	newTree->rigth = NULL;
 	return newTree;
 }
@@ -46,7 +48,7 @@ Tree *buildsTree(char *data)
 	return leaf;
 }
 
-int count(Tree *leaf)
+int countLeafs(Tree *leaf)
 {
 	if (leaf == NULL)
 	{
@@ -54,7 +56,7 @@ int count(Tree *leaf)
 	}
 	else
 	{
-		return count(leaf->left) + count(leaf->rigth) + 1;
+		return countLeafs(leaf->left) + countLeafs(leaf->rigth) + 1;
 	}
 }
 
@@ -79,6 +81,28 @@ int heightTree(Tree *leaf)
 			return rigth + 1;
 		}
 	}
+}
+
+/*
+bool searchValue(Tree *leaf, char data)
+{
+    if(isEmpty(leaf))
+    {
+        return false;
+    }
+    else if (leaf->code == data || searchValue(leaf->left, data) || searchValue(leaf->rigth, data));
+    {
+        return true;
+    }
+}
+*/
+bool searchEmOrdem(Tree *leaf)
+{
+    if(leaf->left != NULL)
+    {
+        searchEmOrdem(leaf->left);
+        printf("[%d]",leaf->code);
+    }
 }
 
 void printTree(Tree *leaf)
