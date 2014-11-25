@@ -32,20 +32,25 @@ bool isEmpty(Tree* leaf)
 	}
 }
 
-int i = 0;
-Tree *buildsTree(char *data)
-{
+int sizeDataTree = 0;
+Tree *buildsTree(char *stringTree){
 
-	Tree *leaf = NULL;
-	if((data[i] != '.') && (data[i] != '\0'))
-	{
-		leaf = alloc(data[i]);
-		i++;
-		leaf->left = buildsTree(data);
-		i++;
-		leaf->rigth = buildsTree(data);
-	}
-	return leaf;
+    Tree *leaf = NULL;
+    if((stringTree[sizeDataTree]!='.') && (stringTree[sizeDataTree] !='\0'))
+    {
+        leaf = alloc(stringTree[sizeDataTree]);
+        sizeDataTree++;
+        leaf->left = buildsTree(stringTree);
+        sizeDataTree++;
+        leaf->rigth = buildsTree(stringTree);
+
+    }
+    else
+    {
+        leaf = NULL;
+    }
+    return leaf;
+
 }
 
 int countLeafs(Tree *leaf)
@@ -83,26 +88,32 @@ int heightTree(Tree *leaf)
 	}
 }
 
-/*
-bool searchValue(Tree *leaf, char data)
+Tree *searchValue(char data, Tree *leaf)
 {
     if(isEmpty(leaf))
     {
-        return false;
+        printf("A arvore estar vazia");
+        return NULL;
     }
-    else if (leaf->code == data || searchValue(leaf->left, data) || searchValue(leaf->rigth, data));
+    else
     {
-        return true;
+        do
+        {
+            if(data==leaf->code){
+                return leaf;
+            }
+            if(data >= leaf->code)
+            {
+                leaf = leaf->rigth;
+            }
+            else if (data <= leaf->code)
+            {
+                leaf = leaf->left;
+            }
+        }while((leaf != NULL) && (data != leaf->code));
     }
-}
-*/
-bool searchEmOrdem(Tree *leaf)
-{
-    if(leaf->left != NULL)
-    {
-        searchEmOrdem(leaf->left);
-        printf("[%d]",leaf->code);
-    }
+
+    return leaf;
 }
 
 void printTree(Tree *leaf)
@@ -117,4 +128,41 @@ void printTree(Tree *leaf)
 		printTree(leaf->left);
 		printTree(leaf->rigth);
 	}
+}
+
+Tree *inserir(Tree *leaf, char numero, Tree *father){
+    if(leaf == NULL)
+    {
+        father = leaf;
+        leaf = alloc(numero);
+        return leaf;
+    }else{
+        if(numero <leaf->code)
+
+            return leaf = inserir(leaf->left, numero, leaf);
+        else
+            return leaf = inserir(leaf->rigth, numero, leaf);
+    }
+}
+
+Tree *insertTree(char data, Tree *leaf)
+{
+    if(isEmpty((leaf)))
+    {
+        leaf = alloc(data);
+    }
+    else
+    {
+        Tree *neWLeaf = alloc(data);
+        Tree *father = searchValue(NULL,leaf);
+      //  printf(("\n%c\n", father.code));
+        if(father->code > data){
+            father->left = neWLeaf;
+        }else if(father->code<-data){
+            father->rigth = neWLeaf;
+        }
+
+        return leaf;
+    }
+
 }

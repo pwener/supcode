@@ -4,11 +4,9 @@
 
 int main()
 {
-    Tree *leaf= NULL;
-
+    Tree *leaf = NULL;
     char *arvore;
-    //arvore = "273..65..8..5.94...";
-    arvore = "ABG..C.DE.F....";
+    arvore = "532..4..8.9..";
 
     leaf = buildsTree(arvore);
     printTree(leaf);
@@ -16,8 +14,13 @@ int main()
     int sizeTree = countLeafs(leaf);
     int height = heightTree(leaf);
 
-    printf("\n%d\t%d",sizeTree,height);
+    printf("\nQuantidade: %d\tNivel: %d\t\n",sizeTree,height);
 
+    Tree *root = NULL;
+    root = searchValue('2', leaf);
+
+    printTree(root);
+    //root = insertTree('7', leaf);
 
     return 0;
 }
