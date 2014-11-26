@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1333000296 source:d:\downloads\binarytreedaibert\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1416942225 source:c:\users\jonatas\downloads\binarytreedaibert\binarytreedaibert\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1416945163 source:c:\users\jonatas\dropbox\unb\5semestre\eda\tree\binarytreedaibert\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	"Tree.h"
+
+1416942755 c:\users\jonatas\dropbox\unb\5semestre\eda\tree\binarytreedaibert\tree.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1417005947 source:c:\users\jonatas\documents\github\eda\binarytreedaibert\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	"Tree.h"
+
+1417003892 c:\users\jonatas\documents\github\eda\binarytreedaibert\tree.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+

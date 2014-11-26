@@ -3,7 +3,6 @@
 
 typedef struct Tree
 {
-    unsigned int sizeTree;
 	struct Tree *left;
 	char code;
 	struct Tree *rigth;
@@ -15,7 +14,6 @@ Tree *alloc(char data)
 	Tree *newTree = (Tree*)malloc(sizeof(Tree));
 	newTree->code = data;
 	newTree->left = NULL;
-	newTree->sizeTree = 0;
 	newTree->rigth = NULL;
 	return newTree;
 }
@@ -33,10 +31,11 @@ bool isEmpty(Tree* leaf)
 }
 
 int sizeDataTree = 0;
-Tree *buildsTree(char *stringTree){
+Tree *buildsTree(char *stringTree)
+{
 
     Tree *leaf = NULL;
-    if((stringTree[sizeDataTree]!='.') && (stringTree[sizeDataTree] !='\0'))
+    if((stringTree[sizeDataTree] !='\0'))
     {
         leaf = alloc(stringTree[sizeDataTree]);
         sizeDataTree++;

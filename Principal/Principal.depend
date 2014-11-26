@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1416920979 source:c:\users\jonatas\documents\github\supcode\principal\main.cpp
+1416938656 source:c:\users\jonatas\documents\github\supcode\principal\main.cpp
 	<stdio.h>
 	<stdlib.h>
 	"Tree.h"
 
-1416920952 c:\users\jonatas\documents\github\supcode\principal\tree.h
+1416928160 c:\users\jonatas\documents\github\supcode\principal\tree.h
 	<stdio.h>
 	<stdlib.h>
 
