@@ -1,17 +1,19 @@
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
 using namespace std;
 
+typedef struct TreeData
+{
 
-typedef struct TreeData{
+	int code;
+	char course[50];
+	int	locality;
+	int linha;
 
-    int code;
-    char course[50];
-    int	locality;
-
-}TreeData;
+} TreeData;
 
 struct Tree
 {
@@ -31,125 +33,152 @@ Tree *alloc(TreeData dados)
 	return treeRoot;
 }
 
+Tree *ordenaTipo(Tree *Topo, Tree *treeLeaf, TreeData dados, int tipo)
+{
+	if(tipo == 1 )
+	{
+		//se o valor for menor que o topo, coloca na esquerda, e caso for maior coloca na direita.
+		if(dados.code <= Topo->data.code)
+		{
+			Topo->left = treeLeaf;
+			printf("\n%d esqueda de %d\n", dados.code, Topo->data.code);
+		}
+		else if(dados.code >= Topo->data.code)
+		{
+			Topo->rigth = treeLeaf;
+			printf("\n%d direita de %d\n", dados.code, Topo->data.code);
+		}
+	}
+	else if(tipo == 2 )
+	{
+		//se o valor for menor que o topo, coloca na esquerda, e caso for maior coloca na direita.
+		if(dados.course <= Topo->data.course)
+		{
+			Topo->left = treeLeaf;
+			printf("\n%s esqueda de %s\n", dados.course, Topo->data.course);
+		}
+		else if(dados.course >= Topo->data.course)
+		{
+			Topo->rigth = treeLeaf;
+			printf("\n%s esqueda de %s\n", dados.course, Topo->data.course);
+		}
+	}
+	else if(tipo == 3 )
+	{
+		//se o valor for menor que o topo, coloca na esquerda, e caso for maior coloca na direita.
+		if(dados.locality <= Topo->data.locality)
+		{
+			Topo->left = treeLeaf;
+			printf("\n%d esqueda de %d\n", dados.locality, Topo->data.locality);
+		}
+		else if(dados.locality >= Topo->data.locality)
+		{
+			Topo->rigth = treeLeaf;
+			printf("\n%d direita de %d\n", dados.locality, Topo->data.locality);
+		}
+	}
+	return treeLeaf;
+}
+
+
 //Primeiro parametro refere-se ao topo da arvore,
 // o segundo sera seuas ramificações para a direita ou esquerda dependedendo de treedata, valor a ser indserido.
-Tree *insertInTree(Tree *Topo, Tree *treeLeaf, TreeData dados)
+Tree *insertInTree(Tree *Topo, Tree *treeLeaf, TreeData dados, int tipo)
 {
 	if(treeLeaf == NULL)
 	{
-        treeLeaf = alloc(dados);
+		treeLeaf = alloc(dados);
 		if(Topo == NULL)
 		{
-			printf("\n%d	%s	%d\n", dados.code, dados.course, dados.locality);	
+			printf("\nO topo foi adicionado com sucesso - %d!!!\n", treeLeaf->data.code);
 		}
 		else
 		{
-		    //se o valor for menor que o topo, coloca na esquerda, e caso for maior coloca na direita.
-            if(dados.code <= Topo->data.code)
-            {
-                Topo->left = treeLeaf;
-                printf("\n%c esqueda de %c\n",dados.code, Topo->data.code);
-            }
-            else if(dados.code >= Topo->data.code)
-            {
-                Topo->rigth = treeLeaf;
-                printf("\n%c direita de %c\n",dados.code, Topo->data.code);
-            }
+			ordenaTipo(Topo, treeLeaf, dados, tipo);
 		}
-        //system("pause");
 		return treeLeaf;
-	}
-	//Vasculha a esquerda até encontar um valor nulo. treeLeaf->left==NULL
-	if(dados.code < treeLeaf->data.code)
-	{
-		insertInTree(treeLeaf, treeLeaf->left, dados);
 	}
 	else
 	{
-		insertInTree(treeLeaf, treeLeaf->rigth, dados);
+		//Vasculha a esquerda até encontar um valor nulo. treeLeaf->left==NULL
+		if(tipo == 1)
+		{
+			if(dados.code < treeLeaf->data.code)
+			{
+				insertInTree(treeLeaf, treeLeaf->left, dados, tipo);
+			}
+			else
+			{
+				insertInTree(treeLeaf, treeLeaf->rigth, dados, tipo);
+			}
+		}
+		else if(tipo == 2)
+		{
+			if(dados.course < treeLeaf->data.course)
+			{
+				insertInTree(treeLeaf, treeLeaf->left, dados, tipo);
+			}
+			else
+			{
+				insertInTree(treeLeaf, treeLeaf->rigth, dados, tipo);
+			}
+		}
+		else if(tipo == 3)
+		{
+			if(dados.locality < treeLeaf->data.locality)
+			{
+				insertInTree(treeLeaf, treeLeaf->left, dados, tipo);
+			}
+			else
+			{
+				insertInTree(treeLeaf, treeLeaf->rigth, dados, tipo);
+			}
+		}
 	}
 }
 
-Tree * includeTree (Tree *root, TreeData dados)
+Tree * includeTree (Tree *root, TreeData dados, int tipo)
 {
 	if (root == NULL)
 	{
-		root = insertInTree(root, root, dados);
+		root = insertInTree(root, root, dados, tipo);
 	}
 	else
 	{
-		insertInTree(root, root, dados);
+		insertInTree(root, root, dados, tipo);
 	}
 	return root;
 }
-/*
-void preordem(Tree *leaf)
+
+void imprimiDecrescente(Tree *leaf)
 {
 	if (leaf != NULL)
 	{
-		printf("%c - ", leaf->data);
-		preordem(leaf->left);
-		preordem(leaf->rigth);
+		imprimiDecrescente(leaf->rigth);
+		printf("%d\t%s\t%d\n", leaf->data.code, leaf->data.course, leaf->data.locality);
+		imprimiDecrescente(leaf->left);
+
 	}
 }
 
-void posordem(Tree *leaf)
+void imprimiCrescente(Tree *leaf)
 {
 	if (leaf != NULL)
-	{
-		posordem(leaf->left);
-		posordem(leaf->rigth);
-		printf("%c - ", leaf->data);
+	{	
+		imprimiCrescente(leaf->left);
+		printf("%d\t%s\t%d\n", leaf->data.code, leaf->data.course, leaf->data.locality);
+		imprimiCrescente(leaf->rigth);
+
 	}
 }
 
-void emordem(Tree *leaf)
-{
-	if (leaf != NULL)
-	{
-		emordem(leaf->left);
-		printf("%c - ", leaf->data);
-		emordem(leaf->rigth);
-	}
-}
-
-bool printTree(Tree *leaf)
-{
-	char left = true;
-	char rigth = true;
-
-	if(leaf != NULL)
-	{
-		printf("%c", leaf->data);
-		left = printTree(leaf->left); ///a==0 caso sub_arvore_esquerda==NULL
-		rigth = printTree(leaf->rigth); ///a==0 caso sub_arvore_direita==NULL
-
-	}
-	else
-	{
-		printf(".");
-		return false;//retorna 0 caso arvore == NULL
-	}
-}
-
-*/
-
-void emordem(Tree *leaf)
-{
-	if (leaf != NULL)
-	{
-		emordem(leaf->left);
-	   	printf("%d	%s	%d\n", leaf->data.code, leaf->data.course, leaf->data.locality);	
-		emordem(leaf->rigth);
-	}
-}
 int contarLinhasArquivo(char *arquivo)
 {
 	char caractere;
 	int existe_linhas = 0;
 	int quant_linhas = 0;
-	FILE *file = fopen(arquivo,"r");
-	
+	FILE *file = fopen(arquivo, "r");
+
 	while((caractere = fgetc(file)) != EOF)
 	{
 		existe_linhas = 1; // há conteúdo no arquivo
