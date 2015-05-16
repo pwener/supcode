@@ -1,97 +1,204 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+/* An limit to strings */
 #define STRLENGTH 255
+
+/* Boolean values */
+#define true 1
+#define false 0
 
 /* Core of lib SUPCOD by Phelipe Wener*/
 
 
 /**
-* readstr should be used for read an String of keyboard and return in the context of called.
+* readString should be used for read an String of keyboard and return in the context of called.
 * Receives a char pointer named 'message', used to print a message on the terminal,
 * functions as the requisition stated. Example:
 * We want which the user insert an name, so:
 *	char *name = readstr("Insert an name");
 */
-char * readstr(char *message){
+char * readString(char *message){
 	printf("\n%s", message);
 	char *text;
 	text = (char * ) malloc(sizeof(STRLENGTH));
 	scanf("%s", text);
-	__fpurge(stdin);
 	return text;
 }
 
 /**
-* readint should be used for read an Integer of keyboard and return in the context of called.
+* readInt should be used for read an Integer of keyboard and return in the context of called.
 * Receives a char pointer named 'message', used to print a message on the terminal,
 * functions as the requisition stated. Example:
 * We want which the user insert your age, so:
 * 	int age = readint("Insert your age");
 */
-int readint(char *message){
+int readInt(char *message){
   	int integer;
   	printf("\n%s", message);
   	scanf ("%d", &integer);
-	__fpurge(stdin); 
  	return integer;
 }
 
 /**
-* readfloat should be used for read an Integer of keyboard and return in the context of called.
+* readFloat should be used for read an Integer of keyboard and return in the context of called.
 * Receives a char pointer named 'message', used to print a message on the terminal,
 * functions as the requisition stated. Example:
 * We want which the user insert the number pi, so:
 *       float pi = readfloat("PI aproximate is:");
 */
-float readfloat(char *message){
+float readFloat(char *message){
 	float decimal;
  	printf("\n%s", message);
 	scanf("%f", &decimal);
-	__fpurge(stdin);
 	return decimal;
 }
 
 /**
-* createintvector will allocate an vector of integers and then returns it.
+* Method that will allocate an vector of integers and then returns it.
 * Receives an Integer named 'size', for specify size of the structure.
 */
-int * createintvector(int size){
+int * createIntVector(int size){
 	return (int*) malloc(size*sizeof(int));
 }
 
 /**
-* createfloatvector will allocate an vector of float and then returns it.
+* Method that will allocate an vector of float and then returns it.
 * Receives an Integer named 'size', for specify size of the structure.
 */
-float * createfloatvector(int size){
+float * createFloatVector(int size){
 	return (float*) malloc(size*sizeof(float));
 }
 /**
-* findfirststr return the index of the first occurrence of the last parameter str.
+* Return the index of the first occurrence of toFind parametter.
 * If an valid value is find will be returned the index, else a value -1.
 */
-int findfirststr(const char *list[], char *str){
-	int i;
-	for(i = 0; i < sizeof(list); i++)
-		if(list[i] == str)
-			return i;
+int findFirstOccurrence(const char *string, const char toFind){
+	int count;
+	for(count = 0; count < sizeof(string); count++){
+		if(string[count] == toFind){
+			return count;
+		} else {
+			// do nothing
+		}
+	}
 	return -1;
 }
 
 /**
+* Return first index that initiate substring passed by parameter
+*/
+int findOccurrenceOfSubstring(const char *string, const char *toFind){
+	int count;
+	int equivalentCharactersCounted = 0;
+	for(count = 0; count < strlen(string); count++){
+		if(string[count] == toFind[equivalentCharactersCounted]){
+			equivalentCharactersCounted++;
+			if(equivalentCharactersCounted == strlen(toFind)){
+				return count - equivalentCharactersCounted + 1;
+			}
+		}else{
+			equivalentCharactersCounted = 0;
+		}
+	}
+	// Result none
+	return 0;
+}
+
+/**
+* Returns a new string from the index, that is a substring of this string.
+*/
+char* substring(const char *string, const int index){
+	int size;
+	size = strlen(string) - index;
+	// An new string to get rest
+	char *sub = malloc(sizeof(char)*size);
+	// To iterate in string
+	int count;
+	for(count = 0; count < size; count++){
+		// from index, get to sub all chars in string
+		sub[count] = string[index+count];
+	}
+	return sub;
+}
+
+int stringContains(const char *string, const char *occurrence){
+	int index;
+	index = findFirstOccurrence(string, occurrence[0]);
+
+	int sizeOfOcurrency;
+	sizeOfOcurrency = strlen(occurrence);
+
+	char * substr = malloc(sizeof(char)*strlen(string));
+	strcpy(substr, string);
+
+	// If find an index that appear in string
+	while(index != -1){
+		// get a new sub from the index
+		substr = substring(substr, index);
+		// Reset index to percours occurrence and substr
+		index = 0;
+		// Run strings while they are equals or until that find the final.
+		while(substr[index] == occurrence[index] && substr[index] != '\0'){
+			// register in index countValue
+			index++;
+		}
+		// If index was incremented until size of currency, substring was found
+		if(index == sizeOfOcurrency){
+			return true;
+		} else {
+			// do nothing...
+		}
+
+		substr = substring(substr, 1);
+
+		index = findFirstOccurrence(substr, occurrence[0]);
+	}
+	// Only if never find sequence
+	return false;
+}
+
+// char *replaceAll(const char *targetString, const char *changeSequence){
+// 	if(stringContains(changeSequence)){
+// 		unsigned int sizeOfTarget;
+// 		unsigned int sizeOfChange;
+// 		sizeOfTarget = strlen(targetString);
+// 		sizeOfChange = strlen(changeSequence);
+
+// 		char *newString, *builder;
+// 		int sizeOfNewString;
+
+// 		if(sizeOfTarget > sizeOfChange){
+// 			sizeOfNewString = sizeOfTarget - sizeOfChange;
+// 		} else {
+// 			sizeOfNewString = sizeOfChange - sizeOfTarget;
+// 		}
+
+// 		newString = malloc(sizeof(char)*sizeOfNewString);
+// 		builder = malloc(sizeof(char)*sizeOfTarget);
+
+// 		strcpy(builder, targetString);
+
+// 		memcpy(newString, targetString, );
+
+// 	} else {
+// 		return NULL;
+// 	}
+// }
+
+/**
 * Returns the number of lines in an file, the URL parameter passed as a string.
 */
-int numberoflines(char *file){
+int numberOfLines(char *file){
 	FILE *target = fopen(file, "r");
 	char s;
 	int n = 0;
 	while((s = fgetc(target)) != EOF){
-		if(s == '\n')
+		if(s == '\n'){
 			n++;
+		}
 	}
 	fclose(target);
 	return n;
 }
-
-
