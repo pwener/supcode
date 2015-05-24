@@ -107,27 +107,42 @@ int findOccurrenceOfSubstring(const char *string, const char *toFind){
 }
 
 /**
-* Returns a new string from the index, that is a substring of this string.
+* Returns a new string from the newIndex, that is a substring of this string.
 */
-char* substring(const char *string, const int index){
-	int size;
-	size = strlen(string) - index;
+char * substring(const char *string, const int newIndex){
+	int size = strlen(string) - newIndex;
 	// An new string to get rest
 	char *sub = malloc(sizeof(char)*size);
 	// To iterate in string
 	int count;
 	for(count = 0; count < size; count++){
-		// from index, get to sub all chars in string
-		sub[count] = string[index+count];
+		// from newIndex, get to sub all chars in string
+		sub[count] = string[newIndex+count];
 	}
 	return sub;
 }
 
+/**
+* Returns a new string inside passed interval
+*/
+char * substringByPositions(const char *string, const int index, const int final){
+	// Size of substring
+	int size = final - index;
+	// Resulting substring
+	char * firstSubstring = substring(string, index);
+	char * newString = malloc(sizeof(char)*size);
+	strncpy(newString, firstSubstring, size);
+	return newString;
+}
+
+/**
+* Verify if an given occurrency is found in an string
+*/
 int stringContains(const char *string, const char *occurrence){
-	int index;
+	unsigned int index;
 	index = findFirstOccurrence(string, occurrence[0]);
 
-	int sizeOfOcurrency;
+	unsigned int sizeOfOcurrency;
 	sizeOfOcurrency = strlen(occurrence);
 
 	char * substr = malloc(sizeof(char)*strlen(string));
@@ -159,33 +174,44 @@ int stringContains(const char *string, const char *occurrence){
 	return false;
 }
 
-// char *replaceAll(const char *targetString, const char *changeSequence){
-// 	if(stringContains(changeSequence)){
-// 		unsigned int sizeOfTarget;
-// 		unsigned int sizeOfChange;
-// 		sizeOfTarget = strlen(targetString);
-// 		sizeOfChange = strlen(changeSequence);
+/**
+* Replace first occurrency of an toReplace in an String for an changeSequence
+*/
+char * replace(const char *targetString, const char *toReplace, const char *changeSequence){
+	if(stringContains(targetString, toReplace)){
+		// Get length of passed parameters
+		unsigned int sizeOfTarget = strlen(targetString);
+		unsigned int sizeOfChange = strlen(changeSequence);
+		unsigned int sizeOfToReplace = strlen(toReplace);
 
-// 		char *newString, *builder;
-// 		int sizeOfNewString;
+		// String to build the new
+		char *builder;
 
-// 		if(sizeOfTarget > sizeOfChange){
-// 			sizeOfNewString = sizeOfTarget - sizeOfChange;
-// 		} else {
-// 			sizeOfNewString = sizeOfChange - sizeOfTarget;
-// 		}
+		int sizeOfNewString = sizeOfTarget - sizeOfToReplace +sizeOfChange;
+		// String that will be returned
+		char *newString = malloc(sizeof(char)*sizeOfNewString);
+		// Find position where replace the new sequence
+		unsigned int positionOfChangeSequence = findOccurrenceOfSubstring(targetString, toReplace);
+		
+		builder = substringByPositions(targetString, 0, positionOfChangeSequence);
+		// Copy targetString until string that will be replace
+		strcpy(newString, builder);
+		// Concatenate changeSequence
+		strcat(newString, changeSequence);
 
-// 		newString = malloc(sizeof(char)*sizeOfNewString);
-// 		builder = malloc(sizeof(char)*sizeOfTarget);
+		free(builder);
 
-// 		strcpy(builder, targetString);
+		// Complete with the rest after the substring replaced
+		builder = substring(targetString, positionOfChangeSequence+sizeOfToReplace);
+		strncat(newString, builder, sizeOfNewString);
 
-// 		memcpy(newString, targetString, );
+		free(builder);
 
-// 	} else {
-// 		return NULL;
-// 	}
-// }
+		return newString;
+	} else {
+		return NULL;
+	}
+}
 
 /**
 * Returns the number of lines in an file, the URL parameter passed as a string.
