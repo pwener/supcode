@@ -9,6 +9,9 @@
 #define true 1
 #define false 0
 
+/* Operational constants */
+#define NONE -1
+
 /* Core of lib SUPCOD by Phelipe Wener*/
 
 
@@ -20,7 +23,6 @@
 *	char *name = readstr("Insert an name");
 */
 char * readString(char *message){
-	printf("\n%s", message);
 	char *text;
 	text = (char * ) malloc(sizeof(STRLENGTH));
 	scanf("%s", text);
@@ -103,7 +105,7 @@ int findOccurrenceOfSubstring(const char *string, const char *toFind){
 		}
 	}
 	// Result none
-	return 0;
+	return NONE;
 }
 
 /**
@@ -139,39 +141,13 @@ char * substringByPositions(const char *string, const int index, const int final
 * Verify if an given occurrency is found in an string
 */
 int stringContains(const char *string, const char *occurrence){
-	unsigned int index;
-	index = findFirstOccurrence(string, occurrence[0]);
+	unsigned int index = findOccurrenceOfSubstring(string, occurrence);
 
-	unsigned int sizeOfOcurrency;
-	sizeOfOcurrency = strlen(occurrence);
-
-	char * substr = malloc(sizeof(char)*strlen(string));
-	strcpy(substr, string);
-
-	// If find an index that appear in string
-	while(index != -1){
-		// get a new sub from the index
-		substr = substring(substr, index);
-		// Reset index to percours occurrence and substr
-		index = 0;
-		// Run strings while they are equals or until that find the final.
-		while(substr[index] == occurrence[index] && substr[index] != '\0'){
-			// register in index countValue
-			index++;
-		}
-		// If index was incremented until size of currency, substring was found
-		if(index == sizeOfOcurrency){
-			return true;
-		} else {
-			// do nothing...
-		}
-
-		substr = substring(substr, 1);
-
-		index = findFirstOccurrence(substr, occurrence[0]);
+	if(index == NONE) {
+		return false;
+	} else {
+		return true;
 	}
-	// Only if never find sequence
-	return false;
 }
 
 /**
@@ -211,6 +187,21 @@ char * replace(const char *targetString, const char *toReplace, const char *chan
 	} else {
 		return NULL;
 	}
+}
+/**
+* Replace all occurrency in an string for an change sequence
+*/
+char * replaceAll(const char *targetString, const char *toReplace, const char *changeSequence){
+	unsigned int targetLenght = strlen(targetString);
+	char * newString = malloc(sizeof(char)*targetLenght);
+
+	strcpy(newString, targetString);
+	
+	while(stringContains(newString, toReplace)){
+		newString = replace(newString, toReplace, changeSequence);
+	}
+
+	return newString;
 }
 
 /**
